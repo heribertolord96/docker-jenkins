@@ -1,0 +1,55 @@
+name: jenkins
+services:
+  jenkins:
+    build:
+        dockerfile: Dockerfile
+    # image: jenkins/jenkins
+    ports:
+      - mode: ingress
+        target: 8080
+        published: "8080"
+        protocol: tcp
+      - mode: ingress
+        target: 50000
+        published: "50000"
+        protocol: tcp
+    restart: always
+    volumes:
+      - type: bind
+        source: /home/ger/Development/jenkins_data
+        target: /var/jenkins_home
+        bind:
+          create_host_path: true
+      - type: bind
+        source: /var/run/docker.sock
+        target: /var/run/docker.sock
+        bind:
+          create_host_path: true
+    devices: []
+    cap_add: []
+    command: []
+    environment: []
+    networks:
+      - jenkins
+    privileged: false
+    container_name: ""
+    cpu_shares: 90
+    deploy:
+      resources:
+        limits:
+          memory: 15975M
+networks:
+  jenkins:
+    name: jenkins_jenkins
+x-casaos:
+  author: self
+  category: self
+  hostname: ""
+  icon: https://icon.casaos.io/main/all/jenkins.png
+  index: /
+  port_map: "8080"
+  scheme: http
+  tips:
+    custom: "No abrir aqui. Ver mejor en potraiter "
+  title:
+    custom: Jenkins
